@@ -1,0 +1,8 @@
+[
+    {
+    "id":1,
+    "question":"Como você ficou sabendo sobre a existencia do NAF - Unicentro?",
+    "type":"checkbox",
+    "answers":["Rádio/TV/Publicidade","Internet","Estudantes ou Professores","Familiares ou conhecidos","No Centro de Atendimento da Receita Federal","Outros"]
+    }
+]
