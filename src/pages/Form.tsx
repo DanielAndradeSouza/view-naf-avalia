@@ -7,22 +7,32 @@ function Form(){
     const totalQuestions = questions.length;
     const [answerState,setAnswerState] = useState();
     const [pageState,setPageState] = useState(0);
-    const nextPage = () => setPageState(prev => prev+1);
-    const prevPage = () => setPageState(prev => prev-1);
+    const nextPage = () => setPageState(prev => Math.min(prev + 1, totalQuestions - 1));
+    const prevPage = () => setPageState(prev => Math.max(prev - 1, 0));
     const q = questions[pageState];
     return (
         <div className="container">
             <h1>Formulário</h1>
             <p>{q.question}</p>
             <div className="questions">
-            {q.answers.map((answer,index) => (
+            {q.options.map((answer,index) => (
                 <label key={index}>
                     <input type={q.type} name="" id="" />
                     {answer}
                 </label>
             ))}
             </div>
-            <button>Questão Anterior</button> <button>Próxima Questão</button>
+            <div>
+                {pageState > 0 && (
+                    <button type="button" onClick={prevPage}>Questão Anterior</button>
+                )}
+                {pageState < totalQuestions-1 && (
+                    <button type="button" onClick={nextPage}>Próxima Questão</button>
+                )}
+                {pageState === totalQuestions-1 && (
+                    <button type="button">Enviar Resposta</button>
+                )}
+            </div>
         </div>
     );
 }
