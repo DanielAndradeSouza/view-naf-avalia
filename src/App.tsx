@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Form from './pages/Form';
+import End from './pages/End';
 
 function App(){
     return (
@@ -8,6 +9,7 @@ function App(){
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/form' element={<Form />} />
+                <Route path='/end' element={<End/>}></Route>
             </Routes>
         </Router>
     )
