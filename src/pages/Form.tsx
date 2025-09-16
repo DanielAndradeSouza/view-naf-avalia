@@ -61,12 +61,12 @@ function Form() {
           <label key={index}>
             <input
               type={q.type}
-              name={`question-${pageState}`}
+              name={`${pageState}`}
               value={answer}
               checked={
                 q.type === "radio"
                   ? answerState[pageState] === answer
-                  : Array.isArray(answerState[pageState]) &&
+                  : Array.isArray(answerState[pageState]) &&//tipagem
                     answerState[pageState][index] === 1
               }
               onChange={() =>
