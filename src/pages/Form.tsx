@@ -2,13 +2,14 @@ import { useState } from "react";
 import "../index.css";
 import "../styles/Form.css";
 import questions from "./questions.json";
+import { useNavigate } from "react-router-dom";
 
 type Answer = string | number[] | null;
 
 function Form() {
   // total de questões
   const totalQuestions = questions.length;
-
+  const navigate = useNavigate();
   // estado das respostas
   const [answerState, setAnswerState] = useState<Answer[]>(
     () =>
@@ -94,7 +95,7 @@ function Form() {
         {pageState === totalQuestions - 1 && (
           <button
             type="button"
-            onClick={() => console.log("Respostas finais:", answerState)}
+            onClick={() => navigate('/end')}
           >
             Enviar Resposta
           </button>
