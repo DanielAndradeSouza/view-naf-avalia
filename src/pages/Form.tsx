@@ -3,6 +3,7 @@ import "../index.css";
 import "../styles/Form.css";
 import questions from "./questions.json";
 import { useNavigate } from "react-router-dom";
+import sendData from "../utls/sendData";
 
 type Answer = string | number[] | null;
 
@@ -95,7 +96,9 @@ function Form() {
         {pageState === totalQuestions - 1 && (
           <button
             type="button"
-            onClick={() => navigate('/end')}
+            onClick={ async () => {
+              await sendData(answerState)
+              navigate('/end')}}
           >
             Enviar Resposta
           </button>
