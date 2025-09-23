@@ -8,7 +8,7 @@
     },
     {
     "id":2,
-    "question":"Avalie seu grau de satisfação com os serviços prestados pelo projeto?",
+    "text":"Avalie seu grau de satisfação com os serviços prestados pelo projeto?",
     "type":"radio",
     "options":["Não se Aplica","Insatisfeito","Satisfeito","Muito Satisfeito"],
     "answers":[]

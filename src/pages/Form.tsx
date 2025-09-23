@@ -57,7 +57,7 @@ function Form() {
   return (
     <div className="container">
       <h1>Formulário</h1>
-      <p>{q.question}</p>
+      <p>{q.text}</p>
       <div className="questions">
         {q.options.map((answer: string, index: number) => (
           <label key={index}>
