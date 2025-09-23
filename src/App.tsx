@@ -8,6 +8,8 @@ function App(){
         <Router>
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path='/modForm'></Route>
+                <Route path='/createQuestion'></Route>
                 <Route path='/form' element={<Form />} />
                 <Route path='/end' element={<End/>}></Route>
             </Routes>
