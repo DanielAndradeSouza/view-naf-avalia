@@ -1,9 +1,10 @@
 [
     {
     "id":1,
-    "question":"Como você ficou sabendo sobre a existencia do NAF - Unicentro?",
+    "text":"Como você ficou sabendo sobre a existencia do NAF - Unicentro?",
     "type":"checkbox",
     "options":["Rádio/TV/Publicidade","Internet","Estudantes ou Professores","Familiares ou conhecidos","No Centro de Atendimento da Receita Federal","Outros"],
+    "order":0,
     "answers":[0,0,0,0,0,0]
     },
     {
@@ -11,6 +12,7 @@
     "text":"Avalie seu grau de satisfação com os serviços prestados pelo projeto?",
     "type":"radio",
     "options":["Não se Aplica","Insatisfeito","Satisfeito","Muito Satisfeito"],
+    "order":1,
     "answers":[]
     }
 ]

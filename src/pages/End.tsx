@@ -6,7 +6,7 @@ function End() {
   return (
     <div>
       <LogoImg></LogoImg>
-        <div className='container'>
+        <div className='conteiner'>
           <h1 className='titulo-painel'>MUITO OBRIGADO POR RESPONDER!</h1>
           <p>Clique no botão abaixo para retornar a tela inicial.</p>
           <button onClick={() => navigate('/')} >Tela Inicial</button>

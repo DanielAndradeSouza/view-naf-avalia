@@ -55,7 +55,7 @@ function Form() {
   };
 
   return (
-    <div className="container">
+    <div className="conteiner">
       <LogoImg></LogoImg>
       <h1>Formulário</h1>
       <p>{q.text}</p>
@@ -98,7 +98,7 @@ function Form() {
           <button
             type="button"
             onClick={ async () => {
-              await fetchData(answerState)
+              await fetchData(answerState,"Form")
               navigate('/end')}}
           >
             Enviar Resposta
