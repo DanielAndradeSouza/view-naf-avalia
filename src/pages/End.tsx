@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import '../styles/Home.css'
+import LogoImg from '../component/logo_img';
 function End() {
   const navigate = useNavigate();
   return (
     <div>
+      <LogoImg></LogoImg>
         <div className='container'>
           <h1 className='titulo-painel'>MUITO OBRIGADO POR RESPONDER!</h1>
           <p>Clique no botão abaixo para retornar a tela inicial.</p>

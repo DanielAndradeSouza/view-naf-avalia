@@ -4,7 +4,7 @@ import "../styles/Form.css";
 import questions from "./questions.json";
 import { useNavigate } from "react-router-dom";
 import sendData from "../utls/sendData";
-
+import LogoImg from "../component/logo_img";
 type Answer = string | number[] | null;
 
 function Form() {
@@ -56,6 +56,7 @@ function Form() {
 
   return (
     <div className="container">
+      <LogoImg></LogoImg>
       <h1>Formulário</h1>
       <p>{q.text}</p>
       <div className="questions">
