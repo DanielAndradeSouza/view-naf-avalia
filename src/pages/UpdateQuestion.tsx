@@ -1,7 +1,7 @@
 import "../index.css";
 import LogoImg from "../component/logo_img";
 import { useState } from "react";
-function CreateQuestion(){
+function UpdateQuestion(question:any){
     const [text,setText] = useState("");
     const [order,setOrder] = useState();
     const [options,setOptions] = useState([""]);
@@ -9,8 +9,8 @@ function CreateQuestion(){
         <div>
             <LogoImg></LogoImg>
             <div className="conteiner">
-                <input type="text" onChange={(e) => setText(e.target.value)}/>
-                <select name="type" id="type">
+                <input type="text" content={question.text} onChange={(e) => setText(e.target.value)}/>
+                <select name="type" id="type" content={question.type}>
                     <option value="checkbox">Checkbox</option>
                     <option value="radio">Radio</option>
                 </select>
@@ -18,4 +18,4 @@ function CreateQuestion(){
         </div>
     )
 }
-export default CreateQuestion;
+export default UpdateQuestion;
