@@ -98,7 +98,7 @@ function Form() {
           <button
             type="button"
             onClick={ async () => {
-              await fetchData(answerState,"Form")
+              await fetchData("Form",answerState)
               navigate('/end')}}
           >
             Enviar Resposta
