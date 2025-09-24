@@ -1,4 +1,4 @@
-function sendData(request:any){
+function fetchData(request:any){
     try{
     const response = fetch("/Form",{
         method:"POST",
@@ -10,4 +10,4 @@ function sendData(request:any){
         console.log("Erro encontrado: ", error)
     }
 }
-export default sendData;
+export default fetchData;

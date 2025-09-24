@@ -3,7 +3,7 @@ import "../index.css";
 import "../styles/Form.css";
 import questions from "./questions.json";
 import { useNavigate } from "react-router-dom";
-import sendData from "../utls/sendData";
+import fetchData from "../utls/fetchData";
 import LogoImg from "../component/logo_img";
 type Answer = string | number[] | null;
 
@@ -98,7 +98,7 @@ function Form() {
           <button
             type="button"
             onClick={ async () => {
-              await sendData(answerState)
+              await fetchData(answerState)
               navigate('/end')}}
           >
             Enviar Resposta
