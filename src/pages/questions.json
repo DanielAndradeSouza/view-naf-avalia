@@ -5,7 +5,7 @@
     "type":"checkbox",
     "options":["Rádio/TV/Publicidade","Internet","Estudantes ou Professores","Familiares ou conhecidos","No Centro de Atendimento da Receita Federal","Outros"],
     "order":0,
-    "answers":[0,0,0,0,0,0]
+    "answers":[]
     },
     {
     "id":2,

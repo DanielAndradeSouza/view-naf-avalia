@@ -5,24 +5,24 @@ import questions from "./questions.json";
 import { useNavigate } from "react-router-dom";
 import fetchData from "../utls/fetchData";
 import LogoImg from "../component/logo_img";
-type Answer = string | number[] | null;
+
+type Answer = string | string[] | null;
 
 function Form() {
-  // total de questões
   const totalQuestions = questions.length;
   const navigate = useNavigate();
-  // estado das respostas
+
+  // Estado das respostas
   const [answerState, setAnswerState] = useState<Answer[]>(
     () =>
       questions.map((q) =>
-        q.type === "checkbox" ? [...q.answers] : null
+        q.type === "checkbox" ? [] : null
       )
   );
 
-  // estado da página
+  // Estado da página
   const [pageState, setPageState] = useState(0);
 
-  // troca de página
   const nextPage = () =>
     setPageState((prev) => Math.min(prev + 1, totalQuestions - 1));
   const prevPage = () =>
@@ -30,7 +30,7 @@ function Form() {
 
   const q = questions[pageState];
 
-  // Manipula os dados de um campo Radio
+  // Manipula Radio
   const handleRadioState = (value: string) => {
     setAnswerState((prev) =>
       prev.map((ans, idx) =>
@@ -39,15 +39,17 @@ function Form() {
     );
   };
 
-  // Manipula os dados de um campo Checkbox
-  const handleCheckboxState = (index: number) => {
+  // Manipula Checkbox (agora guarda strings)
+  const handleCheckboxState = (value: string) => {
     setAnswerState((prev) =>
-      //Itera dentro do antigo estado, se o novo estádo por diferente, reverto os valores
       prev.map((ans, idx) => {
         if (idx === pageState && Array.isArray(ans)) {
-          const newAnswers = [...ans];
-          newAnswers[index] = newAnswers[index] === 1 ? 0 : 1; // toggle
-          return newAnswers;
+          // Se já contém a string, remove
+          if (ans.includes(value)) {
+            return ans.filter((item) => item !== value);
+          }
+          // Se não contém, adiciona
+          return [...ans, value];
         }
         return ans;
       })
@@ -56,7 +58,7 @@ function Form() {
 
   return (
     <div className="conteiner">
-      <LogoImg></LogoImg>
+      <LogoImg />
       <h1>Formulário</h1>
       <p>{q.text}</p>
       <div className="questions">
@@ -69,13 +71,13 @@ function Form() {
               checked={
                 q.type === "radio"
                   ? answerState[pageState] === answer
-                  : Array.isArray(answerState[pageState]) &&//tipagem
-                    answerState[pageState][index] === 1
+                  : Array.isArray(answerState[pageState]) &&
+                    answerState[pageState].includes(answer)
               }
               onChange={() =>
                 q.type === "radio"
                   ? handleRadioState(answer)
-                  : handleCheckboxState(index)
+                  : handleCheckboxState(answer)
               }
             />
             {answer}
@@ -97,9 +99,10 @@ function Form() {
         {pageState === totalQuestions - 1 && (
           <button
             type="button"
-            onClick={ async () => {
-              await fetchData("Form",answerState)
-              navigate('/end')}}
+            onClick={async () => {
+              await fetchData("Form", answerState);
+              navigate("/end");
+            }}
           >
             Enviar Resposta
           </button>

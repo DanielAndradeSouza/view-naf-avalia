@@ -1,6 +1,7 @@
 const URL = "http://localhost:8000";
 function fetchData(path:string,request?:any){
     try{
+        console.log(request);
     const response = fetch(`${URL}/${path}`,{
         method:"POST",
         body:JSON.stringify(request),
