@@ -1,15 +1,16 @@
 const URL = "http://localhost:8000";
-function fetchData(path:string,request?:any){
-    try{
-        console.log(request);
-    const response = fetch(`${URL}/${path}`,{
-        method:"POST",
-        body:JSON.stringify(request),
-        headers: {"Content-Type":"application/json"}
-    });
-    console.log(response);
-    }catch(error){
-        console.log("Erro encontrado: ", error)
+// fetchData.ts
+export default async function fetchData(url: string) {
+  try {
+    const response = await fetch(`http://localhost:8000/${url}`);
+    console.log(response.body);
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados: ${response.status}`);
     }
+    const data = await response.json();
+    return data; 
+  } catch (error) {
+    console.error(error);
+    return []; 
+  }
 }
-export default fetchData;

@@ -1,10 +1,27 @@
+import { useEffect, useState } from "react";
 import "../index.css";
-import "../styles/ModifyForm.css"
+import "../styles/ModifyForm.css";
 import LogoImg from "../component/logo_img";
-import formStatus from './questions.json';
+import fetchData from "../utls/fetchData";
 
 function ModifyForm() {
-  //const formStatus = fetchData()
+  const [formStatus, setFormStatus] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await fetchData("question");
+        setFormStatus(data);
+      } catch (error) {
+        console.error("Erro ao buscar os dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
   return (
     <div>
       <LogoImg />
@@ -12,20 +29,24 @@ function ModifyForm() {
         <h1>Bem Vindo</h1>
         <p>Nessa tela você consegue modificar o formulário de avaliação utilizado pelo NAF</p>
         <div className="question-conteiner">
-        {formStatus.length ? (
-          formStatus.map((question, index) => (
-            <div key={index}>
-              <p className="question-text">{index}. {question.text}</p>
-              <p>Tipo de Resposta: {question.type}</p>
-              {question.options.map((q, idx) => (
-                <p key={idx}>{q}</p>
-              ))}
-            </div>
-          ))
-          
-        ) : (
-          <p>Formulário sem Conteúdo</p>
-        )}</div>
+          {loading ? (
+            <p>Carregando...</p>
+          ) : formStatus.length ? (
+            formStatus.map((question, index) => (
+              <div key={index}>
+                <p className="question-text">
+                  {index + 1}. {question.text}
+                </p>
+                <p>Tipo de Resposta: {question.type}</p>
+                {question.options?.map((q: string, idx: number) => (
+                  <p key={idx}>{q}</p>
+                ))}
+              </div>
+            ))
+          ) : (
+            <p>Formulário sem Conteúdo</p>
+          )}
+        </div>
       </div>
     </div>
   );
