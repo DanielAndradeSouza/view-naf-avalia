@@ -1,4 +1,3 @@
-const URL = "http://localhost:8000";
 // fetchData.ts
 export default async function fetchData(url: string) {
   try {
