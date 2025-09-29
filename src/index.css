@@ -57,16 +57,19 @@ h1 {
   line-height: 0.5;
 }
 input[type="text"],
-select{
-  width: 20vw;
-  padding: 8px 12px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  outline: none;
-  background-color: #f9f9f9;
+select {
+  width: 40vw;               
+      
+  padding: 8px 12px;         
+  margin: 8px 0;             
+  border: 1px solid #ccc;    
+  border-radius: 6px;        
+  font-size: 16px;            
+  box-sizing: border-box;   
+  background-color: #fff;   
+  color: #000;               
 }
+
 button{
     font-size: large;
     font-style: inherit;
