@@ -22,6 +22,30 @@ function ModifyForm() {
     loadData();
   }, []);
 
+  const handleDelete = (index: number) => {
+    const confirmed = window.confirm("Deseja realmente deletar esta pergunta?");
+    if (!confirmed) return;
+
+    const newFormStatus = [...formStatus];
+    newFormStatus.splice(index, 1);
+    setFormStatus(newFormStatus);
+  };
+
+  const handleUpdate = (index: number) => {
+    const updatedText = window.prompt(
+      "Digite o novo texto da pergunta:",
+      formStatus[index].text
+    );
+    if (!updatedText) return;
+
+    const newFormStatus = [...formStatus];
+    newFormStatus[index] = {
+      ...newFormStatus[index],
+      text: updatedText,
+    };
+    setFormStatus(newFormStatus);
+  };
+
   return (
     <div>
       <LogoImg />
@@ -33,7 +57,7 @@ function ModifyForm() {
             <p>Carregando...</p>
           ) : formStatus.length ? (
             formStatus.map((question, index) => (
-              <div key={index}>
+              <div key={index} className="question-block">
                 <p className="question-text">
                   {index + 1}. {question.text}
                 </p>
@@ -41,6 +65,11 @@ function ModifyForm() {
                 {question.options?.map((q: string, idx: number) => (
                   <p key={idx}>{q}</p>
                 ))}
+
+                <div className="question-buttons">
+                  <button onClick={() => handleUpdate(index)}>Atualizar</button>
+                  <button onClick={() => handleDelete(index)}>Deletar</button>
+                </div>
               </div>
             ))
           ) : (

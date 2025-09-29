@@ -13,10 +13,6 @@ function CreateQuestion() {
     options: [""],
   });
 
-  const handleRegistrar = () => {
-    console.log("Pergunta registrada:", questionState);
-  };
-
   const handleOptionChange = (index: number, value: string) => {
     const newOptions = [...questionState.options];
     newOptions[index] = value;
