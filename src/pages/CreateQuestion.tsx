@@ -3,7 +3,7 @@ import LogoImg from "../component/logo_img";
 import { useState } from "react";
 function CreateQuestion(){
     const [text,setText] = useState("");
-    const [order,setOrder] = useState();
+    const [type, setType] = useState("");
     const [options,setOptions] = useState([""]);
     return (
         <div>
@@ -12,10 +12,11 @@ function CreateQuestion(){
                 <div className="questions">
                     <label htmlFor="text">Cabeçalho</label>
                 <input type="text" onChange={(e) => setText(e.target.value)}/>
-                <select name="type" id="type">
+                <select name="type" id="type" onChange={(e) => setType(e.target.value)}>
                     <option value="checkbox">Checkbox</option>
                     <option value="radio">Radio</option>
                 </select>
+                <button>Criar Nova Resposta</button>
                 <button>Registrar</button>
                 </div>
             </div>

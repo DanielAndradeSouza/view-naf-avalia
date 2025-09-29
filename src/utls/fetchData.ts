@@ -1,5 +1,5 @@
 // fetchData.ts
-export default async function fetchData(url: string) {
+export default async function fetchData(url: string, answer?:any) {
   try {
     const response = await fetch(`http://localhost:8000/${url}`);
     if (!response.ok) {
