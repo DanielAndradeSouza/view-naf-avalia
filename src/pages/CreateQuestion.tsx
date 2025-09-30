@@ -58,7 +58,11 @@ function CreateQuestion() {
 
           <button onClick={addOption}>Adicionar Opção</button>
           <button onClick={async () => {
-            await fetchData("question/create")
+            await fetchData("question/create",{"method":"POST", headers: {
+              "Content-Type":"application/json"
+            },
+            body:JSON.stringify(questionState)
+          })
             navigate("/modifyForm")
           }}>Registrar</button>
         </div>
