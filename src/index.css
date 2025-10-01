@@ -16,22 +16,34 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.top-left-image{
-  position:fixed;
-  top:0;
-  left:0;
-  width: 200px;
+.top-left-image, 
+.top-right-image {
+  position: fixed;
+  top: 10px;
+  width: 180px; 
   padding: 10px;
-  z-index: 1000; 
+  z-index: 1000;
+  /*Moldura em volta da imagem*/
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.top-right-image{
-  position:fixed;
-  top:0;
-  right:0;
-  width: 200px;
-  padding: 10px;
-  z-index: 1000; 
+
+.top-left-image {
+  left: 10px;
 }
+
+.top-right-image {
+  right: 10px;
+}
+
+.top-left-image:hover, 
+.top-right-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
 .conteiner{
     width: 65vw;
     min-height: 200px;

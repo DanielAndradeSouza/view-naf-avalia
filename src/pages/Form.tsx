@@ -100,7 +100,7 @@ function Form() {
           <button
             type="button"
             onClick={async () => {
-              await fetchData("Form", answerState);
+              await fetchData("answer", {"method":"POST",headers : {"Content-Type":"application/json"}, body:JSON.stringify(answerState)});
               navigate("/end");
             }}
           >
