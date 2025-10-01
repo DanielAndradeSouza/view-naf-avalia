@@ -3,11 +3,12 @@ import "../index.css";
 import "../styles/ModifyForm.css";
 import LogoImg from "../component/logo_img";
 import fetchData from "../utls/fetchData";
+import { useNavigate } from "react-router-dom";
 
 function ModifyForm() {
   const [formStatus, setFormStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     async function loadData() {
       try {
@@ -22,34 +23,11 @@ function ModifyForm() {
     loadData();
   }, []);
 
-  const handleDelete = (index: number) => {
-    const confirmed = window.confirm("Deseja realmente deletar esta pergunta?");
-    if (!confirmed) return;
-
-    const newFormStatus = [...formStatus];
-    newFormStatus.splice(index, 1);
-    setFormStatus(newFormStatus);
-  };
-
-  const handleUpdate = (index: number) => {
-    const updatedText = window.prompt(
-      "Digite o novo texto da pergunta:",
-      formStatus[index].text
-    );
-    if (!updatedText) return;
-
-    const newFormStatus = [...formStatus];
-    newFormStatus[index] = {
-      ...newFormStatus[index],
-      text: updatedText,
-    };
-    setFormStatus(newFormStatus);
-  };
-
   return (
     <div>
       <LogoImg />
       <div className="conteiner">
+        <button className="add-button" onClick={() => navigate("createQuestion")}>Adicionar</button>
         <h1>Bem Vindo</h1>
         <p>Nessa tela você consegue modificar o formulário de avaliação utilizado pelo NAF</p>
         <div className="question-conteiner">
@@ -67,8 +45,8 @@ function ModifyForm() {
                 ))}
 
                 <div className="question-buttons">
-                  <button onClick={() => handleUpdate(index)}>Atualizar</button>
-                  <button onClick={() => handleDelete(index)}>Deletar</button>
+                  <button>Atualizar</button>
+                  <button>Deletar</button>
                 </div>
               </div>
             ))
