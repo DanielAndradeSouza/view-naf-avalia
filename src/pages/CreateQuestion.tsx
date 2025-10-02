@@ -1,5 +1,6 @@
 import "../index.css";
 import LogoImg from "../component/logo_img";
+import ReturnButton from "../component/return_button";
 import { useState } from "react";
 import type { Question } from "../utls/Question";
 import fetchData from "../utls/fetchData";
@@ -26,6 +27,7 @@ function CreateQuestion() {
   return (
     <div>
       <LogoImg />
+      <ReturnButton path="/modifyForm"></ReturnButton>
       <div className="conteiner">
         <div className="questions">
           <label htmlFor="text">Cabeçalho</label>

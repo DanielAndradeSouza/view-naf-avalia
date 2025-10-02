@@ -10,7 +10,7 @@ function App(){
     return (
         <Router>
             <Routes>
-                <Route path='/' element={<Home />} />
+                <Route path='/home' element={<Home />} />
                 <Route path='/modifyForm' element={<ModifyForm />}></Route>
                 <Route path='/modifyForm/createQuestion' element={<CreateQuestion/>} ></Route>
                 <Route path='modifyForm/updateQuestion/:id' element={<UpdateQuestion/>} ></Route>
