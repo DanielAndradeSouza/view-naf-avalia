@@ -45,8 +45,15 @@ function ModifyForm() {
                 ))}
 
                 <div className="question-buttons">
-                  <button>Atualizar</button>
-                  <button>Deletar</button>
+                  <button onClick={() => navigate(`updateQuestion/${question.id}`)}
+                  >Atualizar</button>
+                  <button
+                      onClick={async () => {
+                        await fetchData(`question/deactivate/${question.id}`, { method: "PATCH" });
+                        navigate(0);
+                      }}
+                    >Deletar</button>
+
                 </div>
               </div>
             ))
