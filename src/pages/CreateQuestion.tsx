@@ -7,7 +7,7 @@ import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
 
 function CreateQuestion() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [questionState, setQuestionState] = useState<Question>({
     text: "",
     type: "checkbox",
@@ -21,13 +21,21 @@ function CreateQuestion() {
   };
 
   const addOption = () => {
-    setQuestionState({ ...questionState, options: [...questionState.options, ""] });
+    setQuestionState({
+      ...questionState,
+      options: [...questionState.options, ""],
+    });
+  };
+
+  const removeOption = (index: number) => {
+    const newOptions = questionState.options.filter((_, i) => i !== index);
+    setQuestionState({ ...questionState, options: newOptions });
   };
 
   return (
     <div>
       <LogoImg />
-      <ReturnButton path="/modifyForm"></ReturnButton>
+      <ReturnButton path="/modifyForm" />
       <div className="conteiner">
         <div className="questions">
           <label htmlFor="text">Cabeçalho</label>
@@ -35,40 +43,59 @@ function CreateQuestion() {
             type="text"
             id="text"
             value={questionState.text}
-            onChange={(e) => setQuestionState({ ...questionState, text: e.target.value })}
+            onChange={(e) =>
+              setQuestionState({ ...questionState, text: e.target.value })
+            }
           />
 
           <select
             name="type"
             id="type"
             value={questionState.type}
-            onChange={(e) => setQuestionState({ ...questionState, type: e.target.value })}
+            onChange={(e) =>
+              setQuestionState({ ...questionState, type: e.target.value })
+            }
           >
             <option value="checkbox">Checkbox</option>
             <option value="radio">Radio</option>
           </select>
-            <p>Respostas</p>
+
+          <p>Respostas</p>
           {questionState.options.map((option, index) => (
-            <input
-              key={index}
-              type="text"
-              value={option}
-              onChange={(e) => handleOptionChange(index, e.target.value)}
-              placeholder={`Opção ${index + 1}`}
-            />
+            <div key={index} style={{ display: "flex", gap: "8px" }}>
+              <input
+                type="text"
+                value={option}
+                onChange={(e) => handleOptionChange(index, e.target.value)}
+                placeholder={`Opção ${index + 1}`}
+              />
+              {questionState.options.length > 1 && (
+                <button type="button" onClick={() => removeOption(index)}>
+                  Remover
+                </button>
+              )}
+            </div>
           ))}
 
-          <button onClick={addOption}>Adicionar Opção</button>
-          <button onClick={async () => {
-            await fetchData("question/create",{"method":"POST", headers: {
-              "Content-Type":"application/json"
-            },
-            body:JSON.stringify(questionState)
-          })
-            navigate("/modifyForm")
-          }}>Registrar</button>
-        </div>
+          <button type="button" onClick={addOption}>
+            Adicionar Opção
+          </button>
 
+          <button
+            onClick={async () => {
+              await fetchData("question/create", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(questionState),
+              });
+              navigate("/modifyForm");
+            }}
+          >
+            Registrar
+          </button>
+        </div>
       </div>
     </div>
   );
