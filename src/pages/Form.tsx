@@ -91,9 +91,10 @@ function Form() {
   }
 
   return (
-    <div className="conteiner">
+    <div>
       <LogoImg />
-      <ReturnButton path="/home"></ReturnButton>
+      <ReturnButton path="/home" />
+      <div className="conteiner">
       <h1>Formulário</h1>
       <p>{q.text}</p>
 
@@ -156,6 +157,7 @@ function Form() {
           </button>
         )}
       </div>
+    </div>
     </div>
   );
 }

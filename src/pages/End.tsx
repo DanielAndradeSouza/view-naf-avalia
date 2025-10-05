@@ -9,7 +9,7 @@ function End() {
         <div className='conteiner'>
           <h1 className='titulo-painel'>Obrigado por sua Resposta!</h1>
           <p>Clique no botão abaixo para retornar a tela inicial.</p>
-          <button onClick={() => navigate('/')} >Tela Inicial</button>
+          <button onClick={() => navigate('/home')} >Tela Inicial</button>
         </div>
       </div>
   )

@@ -2,3 +2,8 @@
     display:flex;
     flex-direction: column;
 }
+.return-container {
+  display: flex;
+  justify-content: center; /* centraliza horizontalmente */
+  margin: 10px 0;
+}
