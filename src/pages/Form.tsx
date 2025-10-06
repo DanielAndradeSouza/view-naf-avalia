@@ -95,69 +95,75 @@ function Form() {
       <LogoImg />
       <ReturnButton path="/home" />
       <div className="conteiner">
-      <h1>Formulário</h1>
-      <p>{q.text}</p>
+        <h1>Formulário</h1>
+        <p>{q.text}</p>
 
-      <div className="questions">
-        {q.options.map((answer: string, index: number) => (
-          <label key={index}>
-            <input
-              type={q.type}
-              name={`${pageState}`}
-              value={answer}
-              checked={
-                q.type === "radio"
-                  ? answerState[pageState] === answer
-                  : Array.isArray(answerState[pageState]) &&
-                    answerState[pageState].includes(answer)
-              }
-              onChange={() =>
-                q.type === "radio"
-                  ? handleRadioState(answer)
-                  : handleCheckboxState(answer)
-              }
-            />
-            {answer}
-          </label>
-        ))}
-      </div>
+        <div className="questions">
+          {q.options.map((answer: string, index: number) => (
+            <label key={index}>
+              <input
+                type={q.type}
+                name={`${pageState}`}
+                value={answer}
+                checked={
+                  q.type === "radio"
+                    ? answerState[pageState] === answer
+                    : Array.isArray(answerState[pageState]) &&
+                      answerState[pageState].includes(answer)
+                }
+                onChange={() =>
+                  q.type === "radio"
+                    ? handleRadioState(answer)
+                    : handleCheckboxState(answer)
+                }
+              />
+              {answer}
+            </label>
+          ))}
+        </div>
 
-      <div>
-        {pageState > 0 && (
-          <button type="button" onClick={prevPage}>
-            Questão Anterior
-          </button>
-        )}
-        {pageState < totalQuestions - 1 && (
-          <button
-            type="button"
-            onClick={nextPage}
-            disabled={
-              answerState[pageState] === null ||
-              (Array.isArray(answerState[pageState]) &&
-                answerState[pageState].length === 0)
-            }
-          >
-            Próxima Questão
-          </button>
-        )}
-        {pageState === totalQuestions - 1 && (
-          <button
-            type="button"
-            onClick={async () => {
-              await fetchData("answer", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(answerState),
-              });
-              navigate("/end");
-            }}
-          >
-            Enviar Resposta
-          </button>
-        )}
+        <div>
+          {pageState > 0 && (
+            <button type="button" onClick={prevPage}>
+              Questão Anterior
+            </button>
+          )}
+          {pageState < totalQuestions - 1 && (
+            <button
+              type="button"
+              onClick={nextPage}
+              disabled={
+                answerState[pageState] === null ||
+                (Array.isArray(answerState[pageState]) &&
+                  answerState[pageState].length === 0)
+              }
+            >
+              Próxima Questão
+            </button>
+          )}
+          {pageState === totalQuestions - 1 && (
+            <button
+              type="button"
+              onClick={async () => {
+                // Monta payload com id da pergunta + resposta
+                const payload = question.map((q, idx) => ({
+                  questionId: q.id, // se vier como question_id, troque aqui
+                  answer: answerState[idx],
+                }));
+
+                await fetchData("answer/create", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
+                });
+                navigate("/end");
+              }}
+            >
+              Enviar Resposta
+            </button>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 }
