@@ -1,7 +1,7 @@
 import "../index.css";
 import LogoImg from "../component/logo_img";
 import ReturnButton from "../component/return_button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Question } from "../utls/Question";
 import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
@@ -14,22 +14,36 @@ function CreateQuestion() {
     options: [""],
   });
 
-  const handleOptionChange = (index: number, value: string) => {
-    const newOptions = [...questionState.options];
-    newOptions[index] = value;
-    setQuestionState({ ...questionState, options: newOptions });
-  };
+  const [isDisabled, setIsDisabled] = useState(true);
 
-  const addOption = () => {
-    setQuestionState({
-      ...questionState,
-      options: [...questionState.options, ""],
+  useEffect(() => {
+    const textEmpty = questionState.text.trim() === "";
+    const hasAnyOptionFilled = questionState.options.every(
+      (opt) => opt.trim() !== ""
+    );
+    setIsDisabled(textEmpty || !hasAnyOptionFilled);
+  }, [questionState.text, questionState.options]); 
+
+  const handleOptionChange = (index: number, value: string) => {
+    setQuestionState((prev) => {
+      const newOptions = [...prev.options];
+      newOptions[index] = value;
+      return { ...prev, options: newOptions };
     });
   };
 
+  const addOption = () => {
+    setQuestionState((prev) => ({
+      ...prev,
+      options: [...prev.options, ""],
+    }));
+  };
+
   const removeOption = (index: number) => {
-    const newOptions = questionState.options.filter((_, i) => i !== index);
-    setQuestionState({ ...questionState, options: newOptions });
+    setQuestionState((prev) => ({
+      ...prev,
+      options: prev.options.filter((_, i) => i !== index),
+    }));
   };
 
   return (
@@ -82,12 +96,11 @@ function CreateQuestion() {
           </button>
 
           <button
+            disabled={isDisabled}
             onClick={async () => {
               await fetchData("question/create", {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(questionState),
               });
               navigate("/modifyForm");

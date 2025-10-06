@@ -73,7 +73,6 @@ function Form() {
     );
   };
 
-  // Loading ou sem questão
   if (loading) {
     return (
       <div className="conteiner">
@@ -144,10 +143,15 @@ function Form() {
           {pageState === totalQuestions - 1 && (
             <button
               type="button"
+              disabled={
+                answerState[pageState] === null ||
+                (Array.isArray(answerState[pageState]) && 
+                  answerState[pageState].length === 0
+              )
+              }
               onClick={async () => {
-                // Monta payload com id da pergunta + resposta
                 const payload = question.map((q, idx) => ({
-                  questionId: q.id, // se vier como question_id, troque aqui
+                  questionId: q.id, 
                   answer: answerState[idx],
                 }));
 
