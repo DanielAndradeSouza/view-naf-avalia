@@ -15,11 +15,13 @@ function UpdateQuestion() {
     type: "checkbox",
     options: [""],
   });
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await fetchData(`question/findOne/${id}`); // busca só a questão
+        const data = await fetchData(`question/findOne/${id}`);
         setQuestionState(data);
       } catch (error) {
         console.error("Erro ao buscar a questão:", error);
@@ -30,6 +32,14 @@ function UpdateQuestion() {
     loadData();
   }, [id]);
 
+  useEffect(() => {
+    const textEmpty = questionState.text.trim() === "";
+    const hasAnyOptionFilled = questionState.options.some(
+      (opt) => opt.trim() !== ""
+    );
+    setIsDisabled(textEmpty || !hasAnyOptionFilled);
+  }, [questionState.text, questionState.options]);
+
   const handleOptionChange = (index: number, value: string) => {
     const newOptions = [...questionState.options];
     newOptions[index] = value;
@@ -37,6 +47,11 @@ function UpdateQuestion() {
   };
 
   const addOption = () => {
+    if (questionState.options.length >= 10) {
+      setErrorMessage("Máximo de 10 opções atingido.");
+      return;
+    }
+    setErrorMessage("");
     setQuestionState({
       ...questionState,
       options: [...questionState.options, ""],
@@ -46,11 +61,12 @@ function UpdateQuestion() {
   const removeOption = (index: number) => {
     const newOptions = questionState.options.filter((_, i) => i !== index);
     setQuestionState({ ...questionState, options: newOptions });
+    setErrorMessage(""); // limpa a mensagem de erro se houver
   };
 
   const handleUpdate = async () => {
     await fetchData(`question/update/${id}`, {
-      method: "PATCH", 
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -106,11 +122,15 @@ function UpdateQuestion() {
             </div>
           ))}
 
-          <button type="button" onClick={addOption}>
-            Adicionar Opção
-          </button>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-          <button onClick={handleUpdate}>
+          {questionState.options.length < 10 && (
+            <button type="button" onClick={addOption}>
+              Adicionar Opção
+            </button>
+          )}
+
+          <button onClick={handleUpdate} disabled={isDisabled}>
             Salvar Alterações
           </button>
         </div>
