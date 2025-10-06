@@ -15,14 +15,15 @@ function CreateQuestion() {
   });
 
   const [isDisabled, setIsDisabled] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const textEmpty = questionState.text.trim() === "";
-    const hasAnyOptionFilled = questionState.options.every(
+    const hasAnyOptionFilled = questionState.options.some(
       (opt) => opt.trim() !== ""
     );
     setIsDisabled(textEmpty || !hasAnyOptionFilled);
-  }, [questionState.text, questionState.options]); 
+  }, [questionState.text, questionState.options]);
 
   const handleOptionChange = (index: number, value: string) => {
     setQuestionState((prev) => {
@@ -33,6 +34,11 @@ function CreateQuestion() {
   };
 
   const addOption = () => {
+    if (questionState.options.length >= 10) {
+      setErrorMessage("Máximo de 10 opções atingido.");
+      return;
+    }
+    setErrorMessage("");
     setQuestionState((prev) => ({
       ...prev,
       options: [...prev.options, ""],
@@ -40,10 +46,20 @@ function CreateQuestion() {
   };
 
   const removeOption = (index: number) => {
-    setQuestionState((prev) => ({
-      ...prev,
-      options: prev.options.filter((_, i) => i !== index),
-    }));
+    setQuestionState((prev) => {
+      const newOptions = prev.options.filter((_, i) => i !== index);
+      return { ...prev, options: newOptions };
+    });
+    setErrorMessage(""); // limpa a mensagem se houver
+  };
+
+  const handleSubmit = async () => {
+    await fetchData("question/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(questionState),
+    });
+    navigate("/modifyForm");
   };
 
   return (
@@ -91,21 +107,16 @@ function CreateQuestion() {
             </div>
           ))}
 
-          <button type="button" onClick={addOption}>
-            Adicionar Opção
-          </button>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-          <button
-            disabled={isDisabled}
-            onClick={async () => {
-              await fetchData("question/create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(questionState),
-              });
-              navigate("/modifyForm");
-            }}
-          >
+          {/* Exibe o botão apenas se houver menos de 10 opções */}
+          {questionState.options.length < 10 && (
+            <button type="button" onClick={addOption}>
+              Adicionar Opção
+            </button>
+          )}
+
+          <button disabled={isDisabled} onClick={handleSubmit}>
             Registrar
           </button>
         </div>
