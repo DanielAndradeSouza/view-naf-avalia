@@ -15,7 +15,7 @@ function UpdateQuestion() {
     type: "checkbox",
     options: [""],
   });
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -34,10 +34,10 @@ function UpdateQuestion() {
 
   useEffect(() => {
     const textEmpty = questionState.text.trim() === "";
-    const hasAnyOptionFilled = questionState.options.some(
+    const allOptionsFilled = questionState.options.every(
       (opt) => opt.trim() !== ""
     );
-    setIsDisabled(textEmpty || !hasAnyOptionFilled);
+    setIsDisabled(textEmpty || !allOptionsFilled);
   }, [questionState.text, questionState.options]);
 
   const handleOptionChange = (index: number, value: string) => {

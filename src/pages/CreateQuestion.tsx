@@ -19,7 +19,7 @@ function CreateQuestion() {
 
   useEffect(() => {
     const textEmpty = questionState.text.trim() === "";
-    const hasAnyOptionFilled = questionState.options.some(
+    const hasAnyOptionFilled = questionState.options.every(
       (opt) => opt.trim() !== ""
     );
     setIsDisabled(textEmpty || !hasAnyOptionFilled);

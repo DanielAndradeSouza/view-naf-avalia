@@ -18,3 +18,8 @@
   cursor: pointer;
   font-weight: bold;
 }
+.question-block.dragging {
+  background-color: #f0f0f0;
+  border: 2px dashed #aaa;
+  transform: rotate(1deg);
+}
