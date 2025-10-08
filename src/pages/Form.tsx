@@ -73,6 +73,12 @@ function Form() {
     );
   };
 
+  // Verifica se a questão atual foi respondida
+  const isCurrentQuestionAnswered = () => {
+    const ans = answerState[pageState];
+    return ans !== null && (!Array.isArray(ans) || ans.length > 0);
+  };
+
   if (loading) {
     return (
       <div className="conteiner">
@@ -127,39 +133,37 @@ function Form() {
               Questão Anterior
             </button>
           )}
+
           {pageState < totalQuestions - 1 && (
             <button
               type="button"
               onClick={nextPage}
-              disabled={
-                answerState[pageState] === null ||
-                (Array.isArray(answerState[pageState]) &&
-                  answerState[pageState].length === 0)
-              }
+              disabled={!isCurrentQuestionAnswered()}
             >
               Próxima Questão
             </button>
           )}
+
           {pageState === totalQuestions - 1 && (
             <button
               type="button"
-              disabled={
-                answerState[pageState] === null ||
-                (Array.isArray(answerState[pageState]) && 
-                  answerState[pageState].length === 0
-              )
-              }
+              disabled={!isCurrentQuestionAnswered()}
               onClick={async () => {
-                const payload = question.map((q, idx) => ({
-                  questionId: q.id, 
-                  answer: answerState[idx],
-                }));
+                // 🔹 Padroniza todas as respostas como arrays
+                const payload = question.map((q, idx) => {
+                  const answer = answerState[idx];
+                  return {
+                    questionId: q.id,
+                    answer: Array.isArray(answer) ? answer : [answer], // ✅ sempre array
+                  };
+                });
 
                 await fetchData("answer/create", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(payload),
                 });
+
                 navigate("/end");
               }}
             >
