@@ -5,6 +5,7 @@ import LogoImg from "../component/logo_img";
 import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { VscAdd } from "react-icons/vsc";
 
 function ModifyForm() {
   const [formStatus, setFormStatus] = useState<any[]>([]);
@@ -25,14 +26,13 @@ function ModifyForm() {
     loadData();
   }, []);
 
-  function handleDragEnd(result: any){
-    if(!result.destination) return;//Serve para caso o bloco tenha sido solto na região de fora do formulário
+  function handleDragEnd(result: any) {
+    if (!result.destination) return;
 
-    const items = Array.from(formStatus);//Cópia do Array do formStatus
-    const [reorderedItem] = items.splice(result.source.index,1);
-    items.splice(result.destination.index,0, reorderedItem);//Nestas duas linhas ele está trocando as duas perguntas de lugar.
-
-    setFormStatus(items);//Atualiza o estado do FormStatus
+    const items = Array.from(formStatus);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setFormStatus(items);
   }
 
   return (
@@ -43,44 +43,47 @@ function ModifyForm() {
           className="add-button"
           onClick={() => navigate("createQuestion")}
         >
-          Adicionar
+          <VscAdd size={20} color="black" />
         </button>
+
         <h1>Bem Vindo</h1>
         <p>
           Nessa tela você consegue modificar o formulário de avaliação utilizado
           pelo NAF
         </p>
 
-        <div className="question-conteiner">
-          {loading ? (
+        {loading ? (
+          <div className="question-conteiner">
             <p>Carregando...</p>
-          ) : formStatus.length ? (//Cria o contexto de DragDrop, a partir deste bloco irá ter a lógica contida para as funcionalidades de arrastar
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="questions">
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}//Conecta os elementos a lógica interna da biblioteca
-                  >
-                    {formStatus.map((question, index) => (
-                      <Draggable
-                        key={question.id}
-                        draggableId={String(question.id)}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
+          </div>
+        ) : formStatus.length ? (
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="questions">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {formStatus.map((question, index) => (
+                    <Draggable
+                      key={question.id}
+                      draggableId={String(question.id)}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          className="question-conteiner"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
                           <div
-                            ref={provided.innerRef}//Conecta os elementos a lógica interna da biblioteca
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}//Propriedades necessárias para o arrastamento dos itens
                             className={`question-block ${
-                              snapshot.isDragging ? "dragging" : ""//Verificação se o item está sendo arrastado
+                              snapshot.isDragging ? "dragging" : ""
                             }`}
                           >
                             <p className="question-text">
                               {index + 1}. {question.text}
                             </p>
                             <p>Tipo de Resposta: {question.type}</p>
+
                             {question.options?.map((q: string, idx: number) => (
                               <p key={idx}>{q}</p>
                             ))}
@@ -106,18 +109,20 @@ function ModifyForm() {
                               </button>
                             </div>
                           </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-          ) : (
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        ) : (
+          <div className="question-conteiner">
             <p>Formulário sem Conteúdo</p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -10,13 +10,42 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  padding: 8px 12px;
-  background-color: blue;
-  color: white;
+  width: 32px;
+  height: 36px;
+  background-color: lightgreen;
+  color: black;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-button svg {
+  width: 20px;
+  height: 20px;
+  color: black;
+  flex-shrink: 0; 
+}
+.delete-button{
+
+}
+.update-button{
+  
+}
+.return-button {
+  width: 32px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.return-button svg{
+  width: 20px;
+  height: 20px;
+  color: white;
+  flex-shrink: 0;
 }
 .question-block.dragging {
   background-color: #f0f0f0;
