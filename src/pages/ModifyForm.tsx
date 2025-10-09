@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
 import "../index.css";
 import "../styles/ModifyForm.css";
+import { useEffect, useState } from "react";
 import LogoImg from "../component/logo_img";
 import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { VscAdd } from "react-icons/vsc";
-
+import Footer from "../component/footer";
 function ModifyForm() {
   const [formStatus, setFormStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ function ModifyForm() {
   }
 
   return (
-    <div>
+    <div className="page">
       <LogoImg />
       <div className="conteiner">
         <button
@@ -82,21 +82,21 @@ function ModifyForm() {
                             <p className="question-text">
                               {index + 1}. {question.text}
                             </p>
-                            <p>Tipo de Resposta: {question.type}</p>
+                            <p className="question-type">Tipo de Resposta: {question.type} </p>
 
                             {question.options?.map((q: string, idx: number) => (
                               <p key={idx}>{q}</p>
                             ))}
 
                             <div className="question-buttons">
-                              <button
+                              <button className="update-button"
                                 onClick={() =>
                                   navigate(`updateQuestion/${question.id}`)
                                 }
                               >
                                 Atualizar
                               </button>
-                              <button
+                              <button className="delete-button"
                                 onClick={async () => {
                                   await fetchData(
                                     `question/deactivate/${question.id}`,
@@ -124,7 +124,9 @@ function ModifyForm() {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
+    
   );
 }
 

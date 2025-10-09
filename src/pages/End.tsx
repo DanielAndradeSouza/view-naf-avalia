@@ -4,7 +4,7 @@ import LogoImg from '../component/logo_img';
 function End() {
   const navigate = useNavigate();
   return (
-    <div>
+    <div className='page'>
       <LogoImg></LogoImg>
         <div className='conteiner'>
           <h1 className='titulo-painel'>Obrigado por sua Resposta!</h1>

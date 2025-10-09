@@ -80,7 +80,7 @@ function UpdateQuestion() {
     <div>
       <ReturnButton path="/modifyForm" />
       <div className="conteiner">
-        <div className="questions">
+        <div className="questions-modify">
           <label htmlFor="text">Cabeçalho</label>
           <input
             type="text"
@@ -113,7 +113,7 @@ function UpdateQuestion() {
                 placeholder={`Opção ${index + 1}`}
               />
               {questionState.options.length > 1 && (
-                <button type="button" onClick={() => removeOption(index)}>
+                <button type="button" className="remove-button" onClick={() => removeOption(index)}>
                   Remover
                 </button>
               )}

@@ -95,7 +95,7 @@ function Form() {
   }
 
   return (
-    <div>
+    <div className="page">
       <ReturnButton path="/home" />
       <div className="conteiner">
         <h1>Formulário</h1>

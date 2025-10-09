@@ -1,4 +1,5 @@
 import "../index.css";
+import "../styles/ModifyQuestion.css"
 import ReturnButton from "../component/return_button";
 import { useState, useEffect } from "react";
 import type { Question } from "../utls/Question";
@@ -62,11 +63,11 @@ function CreateQuestion() {
   };
 
   return (
-    <div>
+    <div >
       <ReturnButton path="/modifyForm" />
       <div className="conteiner">
-        <div className="questions">
-          <label htmlFor="text">Cabeçalho</label>
+        <div className="questions-modify">
+          <label htmlFor="text" >Enunciado</label>
           <input
             type="text"
             id="text"
@@ -88,7 +89,7 @@ function CreateQuestion() {
             <option value="radio">Radio</option>
           </select>
 
-          <p>Respostas</p>
+          <label htmlFor="answers">Respostas</label>
           {questionState.options.map((option, index) => (
             <div key={index} style={{ display: "flex", gap: "8px" }}>
               <input
@@ -98,7 +99,7 @@ function CreateQuestion() {
                 placeholder={`Opção ${index + 1}`}
               />
               {questionState.options.length > 1 && (
-                <button type="button" onClick={() => removeOption(index)}>
+                <button type="button" className="remove-button" onClick={() => removeOption(index)}>
                   Remover
                 </button>
               )}
