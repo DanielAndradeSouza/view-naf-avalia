@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Question } from "../utls/Question";
 import fetchData from "../utls/fetchData";
 import { useNavigate, useParams } from "react-router-dom";
+import Footer from "../component/footer";
 
 function UpdateQuestion() {
   const { id } = useParams();
@@ -77,62 +78,65 @@ function UpdateQuestion() {
   if (loading) return <p>Carregando...</p>;
 
   return (
-    <div>
+    <div className="page">
       <ReturnButton path="/modifyForm" />
-      <div className="conteiner">
-        <div className="questions-modify">
-          <label htmlFor="text">Cabeçalho</label>
-          <input
-            type="text"
-            id="text"
-            value={questionState.text}
-            onChange={(e) =>
-              setQuestionState({ ...questionState, text: e.target.value })
-            }
-          />
+      <div className="wrapper">
+        <div className="conteiner">
+          <div className="questions-modify">
+            <label htmlFor="text">Cabeçalho</label>
+            <input
+              type="text"
+              id="text"
+              value={questionState.text}
+              onChange={(e) =>
+                setQuestionState({ ...questionState, text: e.target.value })
+              }
+            />
 
-          <select
-            name="type"
-            id="type"
-            value={questionState.type}
-            onChange={(e) =>
-              setQuestionState({ ...questionState, type: e.target.value })
-            }
-          >
-            <option value="checkbox">Checkbox</option>
-            <option value="radio">Radio</option>
-          </select>
+            <select
+              name="type"
+              id="type"
+              value={questionState.type}
+              onChange={(e) =>
+                setQuestionState({ ...questionState, type: e.target.value })
+              }
+            >
+              <option value="checkbox">Checkbox</option>
+              <option value="radio">Radio</option>
+            </select>
 
-          <p>Respostas</p>
-          {questionState.options.map((option, index) => (
-            <div key={index} style={{ display: "flex", gap: "8px" }}>
-              <input
-                type="text"
-                value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
-                placeholder={`Opção ${index + 1}`}
-              />
-              {questionState.options.length > 1 && (
-                <button type="button" className="remove-button" onClick={() => removeOption(index)}>
-                  Remover
-                </button>
-              )}
-            </div>
-          ))}
+            <p>Respostas</p>
+            {questionState.options.map((option, index) => (
+              <div key={index} style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  placeholder={`Opção ${index + 1}`}
+                />
+                {questionState.options.length > 1 && (
+                  <button type="button" className="remove-button" onClick={() => removeOption(index)}>
+                    Remover
+                  </button>
+                )}
+              </div>
+            ))}
 
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-          {questionState.options.length < 10 && (
-            <button type="button" onClick={addOption}>
-              Adicionar Opção
+            {questionState.options.length < 10 && (
+              <button type="button" onClick={addOption}>
+                Adicionar Opção
+              </button>
+            )}
+
+            <button onClick={handleUpdate} disabled={isDisabled}>
+              Salvar Alterações
             </button>
-          )}
-
-          <button onClick={handleUpdate} disabled={isDisabled}>
-            Salvar Alterações
-          </button>
+          </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

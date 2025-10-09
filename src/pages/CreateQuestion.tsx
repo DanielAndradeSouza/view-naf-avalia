@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import type { Question } from "../utls/Question";
 import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
+import Footer from "../component/footer";
 
 function CreateQuestion() {
   const navigate = useNavigate();
@@ -63,63 +64,66 @@ function CreateQuestion() {
   };
 
   return (
-    <div >
+    <div className="page">
       <ReturnButton path="/modifyForm" />
-      <div className="conteiner">
-        <div className="questions-modify">
-          <label htmlFor="text" >Enunciado</label>
-          <input
-            type="text"
-            id="text"
-            value={questionState.text}
-            onChange={(e) =>
-              setQuestionState({ ...questionState, text: e.target.value })
-            }
-          />
+      <div className="wrapper">
+        <div className="conteiner">
+          <div className="questions-modify">
+            <label htmlFor="text" >Enunciado</label>
+            <input
+              type="text"
+              id="text"
+              value={questionState.text}
+              onChange={(e) =>
+                setQuestionState({ ...questionState, text: e.target.value })
+              }
+            />
+            
+            <select
+              name="type"
+              id="type"
+              value={questionState.type}
+              onChange={(e) =>
+                setQuestionState({ ...questionState, type: e.target.value })
+              }
+            >
+              <option value="checkbox">Checkbox</option>
+              <option value="radio">Radio</option>
+            </select>
 
-          <select
-            name="type"
-            id="type"
-            value={questionState.type}
-            onChange={(e) =>
-              setQuestionState({ ...questionState, type: e.target.value })
-            }
-          >
-            <option value="checkbox">Checkbox</option>
-            <option value="radio">Radio</option>
-          </select>
+            <label htmlFor="answers">Respostas</label>
+            {questionState.options.map((option, index) => (
+              <div key={index} style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  placeholder={`Opção ${index + 1}`}
+                />
+                {questionState.options.length > 1 && (
+                  <button type="button" className="remove-button" onClick={() => removeOption(index)}>
+                    Remover
+                  </button>
+                )}
+              </div>
+            ))}
 
-          <label htmlFor="answers">Respostas</label>
-          {questionState.options.map((option, index) => (
-            <div key={index} style={{ display: "flex", gap: "8px" }}>
-              <input
-                type="text"
-                value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
-                placeholder={`Opção ${index + 1}`}
-              />
-              {questionState.options.length > 1 && (
-                <button type="button" className="remove-button" onClick={() => removeOption(index)}>
-                  Remover
-                </button>
-              )}
-            </div>
-          ))}
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {/* Exibe o botão apenas se houver menos de 10 opções */}
+            {questionState.options.length < 10 && (
+              <button type="button" onClick={addOption}>
+                Adicionar Opção
+              </button>
+            )}
 
-          {/* Exibe o botão apenas se houver menos de 10 opções */}
-          {questionState.options.length < 10 && (
-            <button type="button" onClick={addOption}>
-              Adicionar Opção
+            <button disabled={isDisabled} onClick={handleSubmit}>
+              Registrar
             </button>
-          )}
-
-          <button disabled={isDisabled} onClick={handleSubmit}>
-            Registrar
-          </button>
+          </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

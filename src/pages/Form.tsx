@@ -4,6 +4,7 @@ import "../styles/Form.css";
 import { useNavigate } from "react-router-dom";
 import fetchData from "../utls/fetchData";
 import ReturnButton from "../component/return_button";
+import Footer from "../component/footer";
 
 type Answer = string | string[] | null;
 
@@ -97,79 +98,82 @@ function Form() {
   return (
     <div className="page">
       <ReturnButton path="/home" />
-      <div className="conteiner">
-        <h1>Formulário</h1>
-        <p>{q.text}</p>
+      <div className="wrapper">
+        <div className="conteiner">
+          <h1>Formulário</h1>
+          <p>{q.text}</p>
 
-        <div className="questions">
-          {q.options.map((answer: string, index: number) => (
-            <label key={index}>
-              <input
-                type={q.type}
-                name={`${pageState}`}
-                value={answer}
-                checked={
-                  q.type === "radio"
-                    ? answerState[pageState] === answer
-                    : Array.isArray(answerState[pageState]) &&
-                      answerState[pageState].includes(answer)
-                }
-                onChange={() =>
-                  q.type === "radio"
-                    ? handleRadioState(answer)
-                    : handleCheckboxState(answer)
-                }
-              />
-              {answer}
-            </label>
-          ))}
-        </div>
+          <div className="questions">
+            {q.options.map((answer: string, index: number) => (
+              <label key={index}>
+                <input
+                  type={q.type}
+                  name={`${pageState}`}
+                  value={answer}
+                  checked={
+                    q.type === "radio"
+                      ? answerState[pageState] === answer
+                      : Array.isArray(answerState[pageState]) &&
+                        answerState[pageState].includes(answer)
+                  }
+                  onChange={() =>
+                    q.type === "radio"
+                      ? handleRadioState(answer)
+                      : handleCheckboxState(answer)
+                  }
+                />
+                {answer}
+              </label>
+            ))}
+          </div>
 
-        <div>
-          {pageState > 0 && (
-            <button type="button" onClick={prevPage}>
-              Questão Anterior
-            </button>
-          )}
+          <div>
+            {pageState > 0 && (
+              <button type="button" onClick={prevPage}>
+                Questão Anterior
+              </button>
+            )}
 
-          {pageState < totalQuestions - 1 && (
-            <button
-              type="button"
-              onClick={nextPage}
-              disabled={!isCurrentQuestionAnswered()}
-            >
-              Próxima Questão
-            </button>
-          )}
+            {pageState < totalQuestions - 1 && (
+              <button
+                type="button"
+                onClick={nextPage}
+                disabled={!isCurrentQuestionAnswered()}
+              >
+                Próxima Questão
+              </button>
+            )}
 
-          {pageState === totalQuestions - 1 && (
-            <button
-              type="button"
-              disabled={!isCurrentQuestionAnswered()}
-              onClick={async () => {
-                // 🔹 Padroniza todas as respostas como arrays
-                const payload = question.map((q, idx) => {
-                  const answer = answerState[idx];
-                  return {
-                    questionId: q.id,
-                    answer: Array.isArray(answer) ? answer : [answer], // ✅ sempre array
-                  };
-                });
+            {pageState === totalQuestions - 1 && (
+              <button
+                type="button"
+                disabled={!isCurrentQuestionAnswered()}
+                onClick={async () => {
+                  // 🔹 Padroniza todas as respostas como arrays
+                  const payload = question.map((q, idx) => {
+                    const answer = answerState[idx];
+                    return {
+                      questionId: q.id,
+                      answer: Array.isArray(answer) ? answer : [answer], // ✅ sempre array
+                    };
+                  });
 
-                await fetchData("answer/create", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(payload),
-                });
+                  await fetchData("answer/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  });
 
-                navigate("/end");
-              }}
-            >
-              Enviar Resposta
-            </button>
-          )}
+                  navigate("/end");
+                }}
+              >
+                Enviar Resposta
+              </button>
+            )}
+          </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
