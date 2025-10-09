@@ -64,6 +64,7 @@ footer{
 }
 
 .conteiner {
+  position: relative;
   width: 65vw;
   border-radius: 12px;
   box-shadow: 0px 0px 10px darkgray;
