@@ -3,7 +3,6 @@ import "../index.css";
 import "../styles/Form.css";
 import { useNavigate } from "react-router-dom";
 import fetchData from "../utls/fetchData";
-import LogoImg from "../component/logo_img";
 import ReturnButton from "../component/return_button";
 
 type Answer = string | string[] | null;
@@ -97,7 +96,6 @@ function Form() {
 
   return (
     <div>
-      <LogoImg />
       <ReturnButton path="/home" />
       <div className="conteiner">
         <h1>Formulário</h1>

@@ -1,5 +1,4 @@
 import "../index.css";
-import LogoImg from "../component/logo_img";
 import ReturnButton from "../component/return_button";
 import { useState, useEffect } from "react";
 import type { Question } from "../utls/Question";
@@ -64,7 +63,6 @@ function CreateQuestion() {
 
   return (
     <div>
-      <LogoImg />
       <ReturnButton path="/modifyForm" />
       <div className="conteiner">
         <div className="questions">
