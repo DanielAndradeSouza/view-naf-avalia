@@ -4,6 +4,17 @@
 }
 .return-container {
   display: flex;
-  justify-content: center; /* centraliza horizontalmente */
+  justify-content: center;
   margin: 10px 0;
+}
+.form-background {
+  display: flex;  
+  flex-direction: column;     
+  justify-content: center;    
+  align-items: center;  
+  background-color: lightgray;
+  border-radius: 12px;
+  padding-bottom: 12px;
+  width: 50%;                   
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

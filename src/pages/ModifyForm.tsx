@@ -6,6 +6,7 @@ import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { VscAdd } from "react-icons/vsc";
+import { FaRegTrashAlt } from "react-icons/fa";
 import Footer from "../component/footer";
 function ModifyForm() {
   const [formStatus, setFormStatus] = useState<any[]>([]);
@@ -106,7 +107,7 @@ function ModifyForm() {
                                     navigate(0);
                                   }}
                                 >
-                                  Deletar
+                                  <FaRegTrashAlt/>
                                 </button>
                               </div>
                             </div>

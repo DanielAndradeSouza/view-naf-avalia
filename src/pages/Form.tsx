@@ -96,85 +96,92 @@ function Form() {
   }
 
   return (
-    <div className="page">
-      <ReturnButton path="/home" />
-      <div className="wrapper">
-        <div className="conteiner">
-          <h1>Formulário</h1>
-          <p>{q.text}</p>
+<div className="page">
+  <ReturnButton path="/home" />
+  <div className="wrapper">
+    <div className="conteiner">
+      <h2>
+        Pergunta {pageState + 1} de {totalQuestions}
+      </h2>
 
-          <div className="questions">
-            {q.options.map((answer: string, index: number) => (
-              <label key={index}>
-                <input
-                  type={q.type}
-                  name={`${pageState}`}
-                  value={answer}
-                  checked={
-                    q.type === "radio"
-                      ? answerState[pageState] === answer
-                      : Array.isArray(answerState[pageState]) &&
-                        answerState[pageState].includes(answer)
-                  }
-                  onChange={() =>
-                    q.type === "radio"
-                      ? handleRadioState(answer)
-                      : handleCheckboxState(answer)
-                  }
-                />
-                {answer}
-              </label>
-            ))}
-          </div>
+      {/* 🔹 Aqui entra o fundo cinza que envolve apenas o enunciado e as respostas */}
+      <div className="form-background">
+        <p className="question-text">{q.text}</p>
 
-          <div>
-            {pageState > 0 && (
-              <button type="button" onClick={prevPage}>
-                Questão Anterior
-              </button>
-            )}
-
-            {pageState < totalQuestions - 1 && (
-              <button
-                type="button"
-                onClick={nextPage}
-                disabled={!isCurrentQuestionAnswered()}
-              >
-                Próxima Questão
-              </button>
-            )}
-
-            {pageState === totalQuestions - 1 && (
-              <button
-                type="button"
-                disabled={!isCurrentQuestionAnswered()}
-                onClick={async () => {
-                  // 🔹 Padroniza todas as respostas como arrays
-                  const payload = question.map((q, idx) => {
-                    const answer = answerState[idx];
-                    return {
-                      questionId: q.id,
-                      answer: Array.isArray(answer) ? answer : [answer], // ✅ sempre array
-                    };
-                  });
-
-                  await fetchData("answer/create", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload),
-                  });
-
-                  navigate("/end");
-                }}
-              >
-                Enviar Resposta
-              </button>
-            )}
-          </div>
+        <div className="questions">
+          {q.options.map((answer: string, index: number) => (
+            <label key={index}>
+              <input
+                type={q.type}
+                name={`${pageState}`}
+                value={answer}
+                checked={
+                  q.type === "radio"
+                    ? answerState[pageState] === answer
+                    : Array.isArray(answerState[pageState]) &&
+                      answerState[pageState].includes(answer)
+                }
+                onChange={() =>
+                  q.type === "radio"
+                    ? handleRadioState(answer)
+                    : handleCheckboxState(answer)
+                }
+              />
+              {answer}
+            </label>
+          ))}
         </div>
       </div>
-      <Footer/>
+
+      {/* 🔹 Botões de navegação ficam fora do fundo cinza */}
+      <div className="buttons">
+        {pageState > 0 && (
+          <button type="button" onClick={prevPage}>
+            Questão Anterior
+          </button>
+        )}
+
+        {pageState < totalQuestions - 1 && (
+          <button
+            type="button"
+            onClick={nextPage}
+            disabled={!isCurrentQuestionAnswered()}
+          >
+            Próxima Questão
+          </button>
+        )}
+
+        {pageState === totalQuestions - 1 && (
+          <button
+            type="button"
+            disabled={!isCurrentQuestionAnswered()}
+            onClick={async () => {
+              const payload = question.map((q, idx) => {
+                const answer = answerState[idx];
+                return {
+                  questionId: q.id,
+                  answer: Array.isArray(answer) ? answer : [answer],
+                };
+              });
+
+              await fetchData("answer/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+
+              navigate("/end");
+            }}
+          >
+            Enviar Resposta
+          </button>
+        )}
+      </div>
     </div>
+  </div>
+  <Footer />
+</div>
+
   );
 }
 
