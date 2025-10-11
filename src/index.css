@@ -53,8 +53,10 @@ p{
 .wrapper {
   flex: 1;
   display: flex;
+  min-height: 100vh;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .conteiner {
@@ -124,14 +126,94 @@ p{
   font-weight: bold;
   margin-bottom: 10px;
 }
-@media(max-width:600px){
-  .logo-img{
-    display:none;
+
+
+@media (max-width: 1024px) {
+  .conteiner {
+    width: 80vw;
+    padding: 16px;
+  }
+
+  .footer-section {
+    min-width: 200px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .top-left-image,
+  .top-right-image {
+    width: 140px;
+    padding: 6px;
   }
 }
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+
+@media (max-width: 768px) {
+  .wrapper {
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+
+  .conteiner {
+    width: 90vw;
+    margin-bottom: 20px;
+    padding: 14px;
+    box-shadow: 0px 0px 6px gray;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .footer-conteiner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-section {
+    margin-bottom: 20px;
+  }
+
+  .top-left-image,
+  .top-right-image {
+    display: none; 
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  .conteiner {
+    width: 95vw;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .form-background {
+    padding: 10px;
+  }
+
+  .question-text {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .footer {
+    padding: 20px 10px;
   }
 }
