@@ -5,6 +5,12 @@ import { useNavigate } from "react-router-dom";
 import fetchData from "../utls/fetchData";
 import ReturnButton from "../component/return_button";
 import Footer from "../component/footer";
+import {
+  FaCheckSquare,
+  FaRegSquare,
+  FaDotCircle,
+  FaRegCircle,
+} from "react-icons/fa";
 
 type Answer = string | string[] | null;
 
@@ -15,7 +21,7 @@ function Form() {
   const [pageState, setPageState] = useState(0);
   const navigate = useNavigate();
 
-  // Carregar perguntas
+  // 🔹 Carregar perguntas
   useEffect(() => {
     async function loadData() {
       try {
@@ -30,36 +36,26 @@ function Form() {
     loadData();
   }, []);
 
-  // Inicializar respostas quando as perguntas chegarem
+  // 🔹 Inicializar respostas quando as perguntas chegarem
   useEffect(() => {
     if (question.length > 0) {
-      setAnswerState(
-        question.map((q) =>
-          q.type === "checkbox" ? [] : null
-        )
-      );
+      setAnswerState(question.map((q) => (q.type === "checkbox" ? [] : null)));
     }
   }, [question]);
 
   const totalQuestions = question.length;
   const q = question[pageState];
 
-  // Navegação
   const nextPage = () =>
     setPageState((prev) => Math.min(prev + 1, totalQuestions - 1));
-  const prevPage = () =>
-    setPageState((prev) => Math.max(prev - 1, 0));
+  const prevPage = () => setPageState((prev) => Math.max(prev - 1, 0));
 
-  // Manipula Radio
   const handleRadioState = (value: string) => {
     setAnswerState((prev) =>
-      prev.map((ans, idx) =>
-        idx === pageState ? value : ans
-      )
+      prev.map((ans, idx) => (idx === pageState ? value : ans))
     );
   };
 
-  // Manipula Checkbox
   const handleCheckboxState = (value: string) => {
     setAnswerState((prev) =>
       prev.map((ans, idx) => {
@@ -73,7 +69,6 @@ function Form() {
     );
   };
 
-  // Verifica se a questão atual foi respondida
   const isCurrentQuestionAnswered = () => {
     const ans = answerState[pageState];
     return ans !== null && (!Array.isArray(ans) || ans.length > 0);
@@ -96,92 +91,113 @@ function Form() {
   }
 
   return (
-<div className="page">
-  <ReturnButton path="/home" />
-  <div className="wrapper">
-    <div className="conteiner">
-      <h2>
-        Pergunta {pageState + 1} de {totalQuestions}
-      </h2>
+    <div className="page">
+      <ReturnButton path="/home" />
+      <div className="wrapper">
+        <div className="conteiner">
+          <h2>
+            Pergunta {pageState + 1} de {totalQuestions}
+          </h2>
 
-      {/* 🔹 Aqui entra o fundo cinza que envolve apenas o enunciado e as respostas */}
-      <div className="form-background">
-        <p className="question-text">{q.text}</p>
+          <div className="form-background">
+            <p className="title-question-text">{q.text}</p>
 
-        <div className="questions">
-          {q.options.map((answer: string, index: number) => (
-            <label key={index}>
-              <input
-                type={q.type}
-                name={`${pageState}`}
-                value={answer}
-                checked={
+            <div className="questions">
+              {q.options.map((answer: string, index: number) => {
+                const isChecked =
                   q.type === "radio"
                     ? answerState[pageState] === answer
                     : Array.isArray(answerState[pageState]) &&
-                      answerState[pageState].includes(answer)
-                }
-                onChange={() =>
-                  q.type === "radio"
-                    ? handleRadioState(answer)
-                    : handleCheckboxState(answer)
-                }
-              />
-              {answer}
-            </label>
-          ))}
+                      answerState[pageState].includes(answer);
+
+                return (
+                  <label
+                    key={index}
+                    className="option"
+                    htmlFor={`option-${pageState}-${index}`}
+                  >
+                    <input
+                      id={`option-${pageState}-${index}`}
+                      type={q.type}
+                      name={`${pageState}`}
+                      value={answer}
+                      checked={isChecked}
+                      onChange={() =>
+                        q.type === "radio"
+                          ? handleRadioState(answer)
+                          : handleCheckboxState(answer)
+                      }
+                      className="hidden-input"
+                    />
+
+                    <span className="custom-icon">
+                      {q.type === "checkbox" ? (
+                        isChecked ? (
+                          <FaCheckSquare className="icon checked" />
+                        ) : (
+                          <FaRegSquare className="icon unchecked" />
+                        )
+                      ) : isChecked ? (
+                        <FaDotCircle className="icon checked" />
+                      ) : (
+                        <FaRegCircle className="icon unchecked" />
+                      )}
+                    </span>
+
+                    <span className="answer-text">{answer}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="buttons">
+            {pageState > 0 && (
+              <button type="button" onClick={prevPage}>
+                Questão Anterior
+              </button>
+            )}
+
+            {pageState < totalQuestions - 1 && (
+              <button
+                type="button"
+                onClick={nextPage}
+                disabled={!isCurrentQuestionAnswered()}
+              >
+                Próxima Questão
+              </button>
+            )}
+
+            {pageState === totalQuestions - 1 && (
+              <button
+                type="button"
+                disabled={!isCurrentQuestionAnswered()}
+                onClick={async () => {
+                  const payload = question.map((q, idx) => {
+                    const answer = answerState[idx];
+                    return {
+                      questionId: q.id,
+                      answer: Array.isArray(answer) ? answer : [answer],
+                    };
+                  });
+
+                  await fetchData("answer/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                  });
+
+                  navigate("/end");
+                }}
+              >
+                Enviar Resposta
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* 🔹 Botões de navegação ficam fora do fundo cinza */}
-      <div className="buttons">
-        {pageState > 0 && (
-          <button type="button" onClick={prevPage}>
-            Questão Anterior
-          </button>
-        )}
-
-        {pageState < totalQuestions - 1 && (
-          <button
-            type="button"
-            onClick={nextPage}
-            disabled={!isCurrentQuestionAnswered()}
-          >
-            Próxima Questão
-          </button>
-        )}
-
-        {pageState === totalQuestions - 1 && (
-          <button
-            type="button"
-            disabled={!isCurrentQuestionAnswered()}
-            onClick={async () => {
-              const payload = question.map((q, idx) => {
-                const answer = answerState[idx];
-                return {
-                  questionId: q.id,
-                  answer: Array.isArray(answer) ? answer : [answer],
-                };
-              });
-
-              await fetchData("answer/create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-              });
-
-              navigate("/end");
-            }}
-          >
-            Enviar Resposta
-          </button>
-        )}
-      </div>
+      <Footer />
     </div>
-  </div>
-  <Footer />
-</div>
-
   );
 }
 

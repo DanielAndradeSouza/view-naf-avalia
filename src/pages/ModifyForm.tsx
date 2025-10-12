@@ -81,7 +81,7 @@ function ModifyForm() {
                                 snapshot.isDragging ? "dragging" : ""
                               }`}
                             >
-                              <p className="question-text">
+                              <p className="question-text-modify">
                                 {index + 1}. {question.text}
                               </p>
                               <p className="question-type">Tipo de Resposta: {question.type} </p>

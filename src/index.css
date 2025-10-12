@@ -53,6 +53,7 @@ p{
 .wrapper {
   flex: 1;
   display: flex;
+  width: 100vw;
   min-height: 100vh;
   justify-content: center;
   align-items: center;
@@ -198,14 +199,6 @@ p{
     width: 95vw;
     padding: 12px;
     border-radius: 8px;
-  }
-
-  .form-background {
-    padding: 10px;
-  }
-
-  .question-text {
-    font-size: 1rem;
   }
 
   button {
