@@ -65,15 +65,26 @@ function UpdateQuestion() {
   };
 
   const handleUpdate = async () => {
-    await fetchData(`question/update/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(questionState),
-    });
-    navigate("/modifyForm");
+    try {
+      await fetchData(`question/update/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(questionState),
+      });
+
+      alert("Pergunta atualizada com sucesso!");
+      navigate("/modifyForm");
+    } catch (err) {
+      if (err instanceof Error) {
+        alert("Erro ao atualizar pergunta:\n" + err.message);
+      } else {
+        alert("Erro desconhecido ao atualizar pergunta.");
+      }
+    }
   };
+
 
   if (loading) return <p>Carregando...</p>;
 

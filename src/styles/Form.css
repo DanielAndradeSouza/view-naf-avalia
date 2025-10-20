@@ -10,16 +10,16 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  height: 20vh;  
+  height: 40%;  
+  width: 70%;
   flex-direction: column;     
   justify-content: flex-start;   
   align-items: flex-start;      
   background-color: lightgray;
   border-radius: 12px;
-  margin-bottom: 12px;
-  width: 50%;                   
+  margin-bottom: 12px;                   
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 4px 20px 20px 20px; 
+  padding: 0px 20px 20px 20px; 
   height: auto;                 
   min-height: 20vh;
 }

@@ -54,14 +54,24 @@ function CreateQuestion() {
     setErrorMessage(""); // limpa a mensagem se houver
   };
 
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
+  try {
     await fetchData("question/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(questionState),
     });
+
+    alert("Pergunta criada com sucesso!");
     navigate("/modifyForm");
-  };
+  } catch (err) {
+    if (err instanceof Error) {
+      alert("Erro: " + err.message);
+    } else {
+      alert("Erro desconhecido.");
+    }
+  }
+};
 
   return (
     <div className="page">

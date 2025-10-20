@@ -1,16 +1,21 @@
 // fetchData.ts
-export default async function fetchData(url: string, header?:RequestInit) {
+export default async function fetchData(url: string, options?: RequestInit) {
   try {
-    console.log(header);
-    const response = await fetch(`http://localhost:8000/${url}`,header);
+    const response = await fetch(`http://localhost:8000/${url}`, options);
+
+    const isJson = response.headers.get("content-type")?.includes("application/json");
+    const data = isJson ? await response.json() : null;
+
     if (!response.ok) {
-      throw new Error(`Erro ao buscar dados: ${response.status}`);
+      const errorMessage = data
+        ? Object.values(data).join("\n") 
+        : `Erro HTTP ${response.status}`;
+      throw new Error(errorMessage);
     }
-    const data = await response.json();
-    console.log(data);
-    return data; 
+
+    return data;
   } catch (error) {
-    console.error(error);
-    return []; 
+    console.error("Erro no fetchData:", error);
+    throw error; 
   }
 }

@@ -21,7 +21,6 @@ function Form() {
   const [pageState, setPageState] = useState(0);
   const navigate = useNavigate();
 
-  // 🔹 Carregar perguntas
   useEffect(() => {
     async function loadData() {
       try {
@@ -36,7 +35,6 @@ function Form() {
     loadData();
   }, []);
 
-  // 🔹 Inicializar respostas quando as perguntas chegarem
   useEffect(() => {
     if (question.length > 0) {
       setAnswerState(question.map((q) => (q.type === "checkbox" ? [] : null)));
@@ -89,7 +87,32 @@ function Form() {
       </div>
     );
   }
+  const handleSendAnswers = async () => {
+    try {
+      const payload = question.map((q, idx) => {
+        const answer = answerState[idx];
+        return {
+          questionId: q.id,
+          answer: Array.isArray(answer) ? answer : [answer],
+        };
+      });
 
+      await fetchData("answer/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      alert("Respostas enviadas com sucesso!");
+      navigate("/end");
+    } catch (err) {
+      if (err instanceof Error) {
+        alert("Erro ao enviar respostas:\n" + err.message);
+      } else {
+        alert("Erro desconhecido ao enviar respostas.");
+      }
+    }
+  };
   return (
     <div className="page">
       <ReturnButton path="/home" />
@@ -169,29 +192,13 @@ function Form() {
             )}
 
             {pageState === totalQuestions - 1 && (
-              <button
-                type="button"
-                disabled={!isCurrentQuestionAnswered()}
-                onClick={async () => {
-                  const payload = question.map((q, idx) => {
-                    const answer = answerState[idx];
-                    return {
-                      questionId: q.id,
-                      answer: Array.isArray(answer) ? answer : [answer],
-                    };
-                  });
-
-                  await fetchData("answer/create", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload),
-                  });
-
-                  navigate("/end");
-                }}
-              >
-                Enviar Resposta
-              </button>
+                <button
+                  type="button"
+                  disabled={!isCurrentQuestionAnswered()}
+                  onClick={handleSendAnswers}
+                >
+                  Enviar Resposta
+                </button>
             )}
           </div>
         </div>
