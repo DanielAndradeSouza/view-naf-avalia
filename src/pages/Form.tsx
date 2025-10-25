@@ -118,9 +118,9 @@ function Form() {
       <ReturnButton path="/home" />
       <div className="wrapper">
         <div className="conteiner">
-          <h2>
+          <h3>
             Pergunta {pageState + 1} de {totalQuestions}
-          </h2>
+          </h3>
 
           <div className="form-background">
             <p className="title-question-text">{q.text}</p>

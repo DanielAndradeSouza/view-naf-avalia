@@ -146,8 +146,11 @@ button:hover{
     width: 140px;
     padding: 6px;
   }
+  .top-left-image,
+  .top-right-image {
+    display: none; 
+  }
 }
-
 @media (max-width: 768px) {
   .wrapper {
     align-items: flex-start;
@@ -181,10 +184,6 @@ button:hover{
     margin-bottom: 20px;
   }
 
-  .top-left-image,
-  .top-right-image {
-    display: none; 
-  }
 }
 
 @media (max-width: 480px) {

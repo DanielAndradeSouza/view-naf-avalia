@@ -27,6 +27,7 @@
 .title-question-text {
   font-size: 1.7rem;
   margin-bottom: 10px;
+  font-weight: bold;
   text-align: left;             
   width: 100%;
 }
@@ -38,14 +39,12 @@
   text-align: left;             
   width: 100%;
 }
-.questions label{
-  font-size: 1.2rem;
-}
+
 .option {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1rem;
+  font-size: 1.5rem;
   cursor: pointer;
   user-select: none;
   text-align: left;
@@ -53,7 +52,7 @@
 }
 
 .icon {
-  font-size: 1.3rem;
+  font-size: 1rem;
   transition: transform 0.15s ease, color 0.15s ease;
 }
 
