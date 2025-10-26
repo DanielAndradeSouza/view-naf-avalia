@@ -24,7 +24,7 @@ function Form() {
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await fetchData("question");
+        const data = await fetchData("question") || [];
         setQuestionState(data);
       } catch (error) {
         console.error("Erro ao buscar os dados:", error);

@@ -17,7 +17,7 @@ export default function ModifyForm() {
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await fetchData("question");
+        const data = await fetchData("question") || [];
         setFormStatus(data);
       } catch (error) {
         console.error("Erro ao buscar os dados:", error);
@@ -37,7 +37,6 @@ export default function ModifyForm() {
     setFormStatus(items);
   }
 
-  // 🔥 Função para salvar a nova ordem no back-end
   async function handleSaveOrder() {
     try {
       const orderedIds = formStatus.map((q) => q.id);
