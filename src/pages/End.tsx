@@ -2,8 +2,12 @@ import "../index.css"
 import { useNavigate } from 'react-router-dom'
 import LogoImg from '../component/logo_img';
 import Footer from '../component/footer';
+import { useEffect } from "react";
 function End() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Fim";
+  }, []);
   return (
     <div className='page'>
       <LogoImg></LogoImg>

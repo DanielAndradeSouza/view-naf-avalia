@@ -2,8 +2,12 @@ import "../index.css"
 import { useNavigate } from 'react-router-dom'
 import LogoImg from '../component/logo_img';
 import Footer from '../component/footer';
+import { useEffect } from "react";
 function Home() {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "Início";
+  }, []);
   return (
     <div className='page'>
       <div className="wrapper">

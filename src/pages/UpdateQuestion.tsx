@@ -21,6 +21,7 @@ function UpdateQuestion() {
   useEffect(() => {
     async function loadData() {
       try {
+        document.title = "Atualizar";
         const data = await fetchData(`question/findOne/${id}`);
         setQuestionState(data);
       } catch (error) {

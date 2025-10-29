@@ -24,6 +24,7 @@ function Form() {
   useEffect(() => {
     async function loadData() {
       try {
+        document.title = "Formulário";
         const data = await fetchData("question") || [];
         setQuestionState(data);
       } catch (error) {

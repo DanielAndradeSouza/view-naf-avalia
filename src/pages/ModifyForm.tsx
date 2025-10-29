@@ -13,10 +13,11 @@ export default function ModifyForm() {
   const [formStatus, setFormStatus] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const max_question = 20;
   useEffect(() => {
     async function loadData() {
       try {
+        document.title = "Modificar Formulário";
         const data = await fetchData("question") || [];
         setFormStatus(data);
       } catch (error) {
@@ -64,12 +65,23 @@ export default function ModifyForm() {
 
       <div className="wrapper">
         <div className="conteiner">
+        {formStatus.length >= max_question && (
+          <p className="warning-text">
+            Limite máximo de {max_question} perguntas atingido. Exclua alguma para adicionar nova.
+          </p>
+        )}
           <button
             className="add-button"
             onClick={() => navigate("createQuestion")}
+            disabled={formStatus.length >= max_question} 
+            style={{
+              opacity: formStatus.length >= max_question ? 0.5 : 1,
+              cursor: formStatus.length >= max_question ? "not-allowed" : "pointer",
+            }}
           >
             <VscAdd size={20} color="black" />
           </button>
+
 
           <h1>Bem Vindo</h1>
           <p>

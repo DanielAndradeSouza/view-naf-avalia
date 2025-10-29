@@ -1,7 +1,7 @@
 // fetchData.ts
 export default async function fetchData(url: string, options?: RequestInit) {
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(`http://localhost:8000/${url}`, options);
 
     const isJson = response.headers.get("content-type")?.includes("application/json");
     const data = isJson ? await response.json() : null;

@@ -19,6 +19,7 @@ function CreateQuestion() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+    document.title = "Criar";
     const textEmpty = questionState.text.trim() === "";
     const hasAnyOptionFilled = questionState.options.every(
       (opt) => opt.trim() !== ""
