@@ -121,7 +121,6 @@ const handleSubmit = async () => {
 
             {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-            {/* Exibe o botão apenas se houver menos de 10 opções */}
             {questionState.options.length < 10 && (
               <button type="button" onClick={addOption}>
                 Adicionar Opção
