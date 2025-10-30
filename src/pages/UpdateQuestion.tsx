@@ -5,18 +5,22 @@ import type { Question } from "../utls/Question";
 import fetchData from "../utls/fetchData";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../component/footer";
+import AlertModal from "../component/alert_modal";
 
 function UpdateQuestion() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   const [questionState, setQuestionState] = useState<Question>({
     text: "",
     type: "checkbox",
     options: [""],
   });
+
   const [isDisabled, setIsDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -26,6 +30,7 @@ function UpdateQuestion() {
         setQuestionState(data);
       } catch (error) {
         console.error("Erro ao buscar a questão:", error);
+        setAlertMessage("Erro ao carregar a questão. Tente novamente mais tarde.");
       } finally {
         setLoading(false);
       }
@@ -62,7 +67,7 @@ function UpdateQuestion() {
   const removeOption = (index: number) => {
     const newOptions = questionState.options.filter((_, i) => i !== index);
     setQuestionState({ ...questionState, options: newOptions });
-    setErrorMessage(""); // limpa a mensagem de erro se houver
+    setErrorMessage("");
   };
 
   const handleUpdate = async () => {
@@ -75,17 +80,15 @@ function UpdateQuestion() {
         body: JSON.stringify(questionState),
       });
 
-      alert("Pergunta atualizada com sucesso!");
       navigate("/modifyForm");
     } catch (err) {
       if (err instanceof Error) {
-        alert("Erro ao atualizar pergunta:\n" + err.message);
+        setAlertMessage("Erro ao atualizar pergunta: " + err.message);
       } else {
-        alert("Erro desconhecido ao atualizar pergunta.");
+        setAlertMessage("Erro desconhecido ao atualizar pergunta.");
       }
     }
   };
-
 
   if (loading) return <p>Carregando...</p>;
 
@@ -127,7 +130,11 @@ function UpdateQuestion() {
                   placeholder={`Opção ${index + 1}`}
                 />
                 {questionState.options.length > 1 && (
-                  <button type="button" className="remove-button" onClick={() => removeOption(index)}>
+                  <button
+                    type="button"
+                    className="remove-button"
+                    onClick={() => removeOption(index)}
+                  >
                     Remover
                   </button>
                 )}
@@ -148,7 +155,15 @@ function UpdateQuestion() {
           </div>
         </div>
       </div>
-      <Footer/>
+
+      {alertMessage && (
+        <AlertModal
+          message={alertMessage}
+          onClose={() => setAlertMessage(null)}
+        />
+      )}
+
+      <Footer />
     </div>
   );
 }

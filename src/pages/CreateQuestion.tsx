@@ -1,11 +1,12 @@
 import "../index.css";
-import "../styles/ModifyQuestion.css"
+import "../styles/ModifyQuestion.css";
 import ReturnButton from "../component/return_button";
 import { useState, useEffect } from "react";
 import type { Question } from "../utls/Question";
 import fetchData from "../utls/fetchData";
 import { useNavigate } from "react-router-dom";
 import Footer from "../component/footer";
+import AlertModal from "../component/alert_modal";
 
 function CreateQuestion() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function CreateQuestion() {
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "Criar";
@@ -52,27 +54,26 @@ function CreateQuestion() {
       const newOptions = prev.options.filter((_, i) => i !== index);
       return { ...prev, options: newOptions };
     });
-    setErrorMessage(""); // limpa a mensagem se houver
+    setErrorMessage("");
   };
 
-const handleSubmit = async () => {
-  try {
-    await fetchData("question/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(questionState),
-    });
+  const handleSubmit = async () => {
+    try {
+      await fetchData("question/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(questionState),
+      });
 
-    alert("Pergunta criada com sucesso!");
-    navigate("/modifyForm");
-  } catch (err) {
-    if (err instanceof Error) {
-      alert("Erro: " + err.message);
-    } else {
-      alert("Erro desconhecido.");
+      navigate("/modifyForm");
+    } catch (err) {
+      if (err instanceof Error) {
+        setModalMessage("Erro ao criar pergunta: " + err.message);
+      } else {
+        setModalMessage("Erro desconhecido ao criar pergunta.");
+      }
     }
-  }
-};
+  };
 
   return (
     <div className="page">
@@ -80,7 +81,7 @@ const handleSubmit = async () => {
       <div className="wrapper">
         <div className="conteiner">
           <div className="questions-modify">
-            <label htmlFor="text" >Enunciado</label>
+            <label htmlFor="text">Enunciado</label>
             <input
               type="text"
               id="text"
@@ -89,7 +90,7 @@ const handleSubmit = async () => {
                 setQuestionState({ ...questionState, text: e.target.value })
               }
             />
-            
+
             <select
               name="type"
               id="type"
@@ -112,7 +113,11 @@ const handleSubmit = async () => {
                   placeholder={`Opção ${index + 1}`}
                 />
                 {questionState.options.length > 1 && (
-                  <button type="button" className="remove-button" onClick={() => removeOption(index)}>
+                  <button
+                    type="button"
+                    className="remove-button"
+                    onClick={() => removeOption(index)}
+                  >
                     Remover
                   </button>
                 )}
@@ -133,7 +138,15 @@ const handleSubmit = async () => {
           </div>
         </div>
       </div>
-      <Footer/>
+
+      {modalMessage && (
+        <AlertModal
+          message={modalMessage}
+          onClose={() => setModalMessage(null)}
+        />
+      )}
+
+      <Footer />
     </div>
   );
 }

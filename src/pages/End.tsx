@@ -15,7 +15,7 @@ function End() {
       <div className="wrapper">
           <div className='conteiner'>
             <h1 className='titulo-painel'>Obrigado pela Resposta!</h1>
-            <p>Clique no botão abaixo para retornar a tela inicial.</p>
+            <p className="home-text">Clique no botão abaixo para retornar a tela inicial.</p>
             <button onClick={() => navigate('/home')} >Tela Inicial</button>
           </div>
         </div>

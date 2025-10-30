@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import fetchData from "../utls/fetchData";
 import ReturnButton from "../component/return_button";
 import Footer from "../component/footer";
+import AlertModal from "../component/alert_modal"; 
 import {
   FaCheckSquare,
   FaRegSquare,
@@ -19,6 +20,7 @@ function Form() {
   const [answerState, setAnswerState] = useState<Answer[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageState, setPageState] = useState(0);
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +31,7 @@ function Form() {
         setQuestionState(data);
       } catch (error) {
         console.error("Erro ao buscar os dados:", error);
+        setModalMessage("Erro ao carregar as questões.");
       } finally {
         setLoading(false);
       }
@@ -88,6 +91,7 @@ function Form() {
       </div>
     );
   }
+
   const handleSendAnswers = async () => {
     try {
       const payload = question.map((q, idx) => {
@@ -104,16 +108,16 @@ function Form() {
         body: JSON.stringify(payload),
       });
 
-      alert("Respostas enviadas com sucesso!");
       navigate("/end");
     } catch (err) {
       if (err instanceof Error) {
-        alert("Erro ao enviar respostas:\n" + err.message);
+        setModalMessage("Erro ao enviar respostas:\n" + err.message); 
       } else {
-        alert("Erro desconhecido ao enviar respostas.");
+        setModalMessage("Erro desconhecido ao enviar respostas.");
       }
     }
   };
+
   return (
     <div className="page">
       <ReturnButton path="/home" />
@@ -193,18 +197,24 @@ function Form() {
             )}
 
             {pageState === totalQuestions - 1 && (
-                <button
-                  type="button"
-                  disabled={!isCurrentQuestionAnswered()}
-                  onClick={handleSendAnswers}
-                >
-                  Enviar Resposta
-                </button>
+              <button
+                type="button"
+                disabled={!isCurrentQuestionAnswered()}
+                onClick={handleSendAnswers}
+              >
+                Enviar Resposta
+              </button>
             )}
           </div>
         </div>
       </div>
+
       <Footer />
+
+      <AlertModal
+        message={modalMessage}
+        onClose={() => setModalMessage(null)}
+      />
     </div>
   );
 }
